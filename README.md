@@ -1,4 +1,4 @@
-# Imagine360: Immersive 360 Video Generation from Perspective Anchor
+# GenDoP: Auto-regressive Camera Trajectory Generation as a Director of Photography
 
 
 <p align="center">
