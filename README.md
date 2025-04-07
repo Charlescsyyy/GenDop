@@ -1,0 +1,2 @@
+# GenDoP
+GenDoP: Auto-regressive Camera Trajectory Generation as a Director of Photography
