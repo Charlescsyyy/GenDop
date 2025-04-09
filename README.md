@@ -20,7 +20,7 @@
 - [ ] Release Inference Code 
 - [ ] Release Dataset
 - [ ] Release Dataset Construction Code
-- [ ] Release Train Code
+- [ ] Release Training Code
 - [ ] Gradio Demo
 
 
