@@ -3,9 +3,9 @@
 
 <p align="center">
 <a href="TODO"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a>
-<a href="TODO"><img src="https://img.shields.io/badge/Project-Website-red"></a>
-<a href="TODO"><img src="https://img.shields.io/static/v1?label=Demo&message=Video&color=orange"></a>
-<a href="TODO"><img src="https://img.shields.io/static/v1?label=Dataset&message=Data&color=yellow"></a>
+<a href="https://github.com/kszpxxzmc/GenDoP"><img src="https://img.shields.io/badge/Project-Website-red"></a>
+<a href="https://studio.youtube.com/video/UWvR_A7yFeI/"><img src="https://img.shields.io/static/v1?label=Demo&message=Video&color=orange"></a>
+<a href=""><img src="https://img.shields.io/static/v1?label=Dataset&message=Data&color=yellow"></a>
 <a href="" target='_blank'>
 <img src="https://visitor-badge.laobi.icu/badge?page_id=TODO" />
 </a>
