@@ -3,7 +3,7 @@
 
 <p align="center">
 <a href="TODO"><img src="https://img.shields.io/badge/arXiv-Paper-<color>"></a>
-<a href="https://github.com/kszpxxzmc/GenDoP"><img src="https://img.shields.io/badge/Project-Website-red"></a>
+<a href="https://kszpxxzmc.github.io/GenDoP/"><img src="https://img.shields.io/badge/Project-Website-red"></a>
 <a href="https://studio.youtube.com/video/UWvR_A7yFeI/"><img src="https://img.shields.io/static/v1?label=Demo&message=Video&color=orange"></a>
 <a href=""><img src="https://img.shields.io/static/v1?label=Dataset&message=Data&color=yellow"></a>
 <a href="" target='_blank'>
@@ -11,7 +11,7 @@
 </a>
 </p>
 
-[**Paper**](TODO) | [**Project page**](https://github.com/kszpxxzmc/GenDoP) | [**Video**](https://studio.youtube.com/video/UWvR_A7yFeI/) | [**Data**](TODO) 
+[**Paper**](TODO) | [**Project page**](https://kszpxxzmc.github.io/GenDoP/) | [**Video**](https://studio.youtube.com/video/UWvR_A7yFeI/) | [**Data**](TODO) 
 
 [Mengchen Zhang](https://kszpxxzmc.github.io), [Tong Wu✉️](https://wutong16.github.io), [Jing Tan](https://sparkstj.github.io/), [Ziwei Liu](https://liuziwei7.github.io/), [Gordon Wetzstein](https://stanford.edu/~gordonwz/), [Dahua Lin✉️](http://dahua.site/)
 
