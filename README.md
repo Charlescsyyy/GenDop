@@ -11,7 +11,7 @@
 </a>
 </p>
 
-[**Paper**](TODO) | [**Project page**](TODO) | [**Video**](TODO) | [**Data**](TODO) 
+[**Paper**](TODO) | [**Project page**](https://github.com/kszpxxzmc/GenDoP) | [**Video**](https://studio.youtube.com/video/UWvR_A7yFeI/) | [**Data**](TODO) 
 
 [Mengchen Zhang](https://kszpxxzmc.github.io), [Tong Wu✉️](https://wutong16.github.io), [Jing Tan](https://sparkstj.github.io/), [Ziwei Liu](https://liuziwei7.github.io/), [Gordon Wetzstein](https://stanford.edu/~gordonwz/), [Dahua Lin✉️](http://dahua.site/)
 
