@@ -15,7 +15,7 @@
 
 [Mengchen Zhang](https://kszpxxzmc.github.io), [Tong Wu✉️](https://wutong16.github.io), [Jing Tan](https://sparkstj.github.io/), [Ziwei Liu](https://liuziwei7.github.io/), [Gordon Wetzstein](https://stanford.edu/~gordonwz/), [Dahua Lin✉️](http://dahua.site/)
 
-![Teaser Image](./assets/teaser_v3.pdf)
+![Teaser Image](./assets/teaser.png)
 
 ## 📆 Todo
 - [ ] Release Inference Code 
