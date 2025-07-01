@@ -17,6 +17,40 @@
 
 ![Teaser Image](./assets/teaser.png)
 
+
+## ✨ Updates
+[2025-07-01] Released inference code and model checkpoints!
+
+<!-- [2025-07-08] Released the curated trajectory dataset DataDoP along with its construction code.
+
+[2025-07-15] Released training code.
+
+[2025-07-15] Launched the Gradio demo. -->
+
+## 📦 Install 
+Make sure ```torch``` with CUDA is correctly installed. For training, we rely on ```flash-attn``` (requires at least Ampere GPUs like A100). For inference, older GPUs like V100 are also supported, although slower.
+```
+git clone https://github.com/3DTopia/GenDoP.git
+cd GenDoP
+
+conda create --name GenDoP python=3.10
+conda activate GenDoP
+pip install flash-attn --no-build-isolation
+pip install -r requirements.txt
+```
+## 💡 Inference 
+
+### Pretrained Models
+
+### Trajectory Generation
+
+### Visualization
+
+
+<!-- ## 📚 Dataset
+
+## 🏋️‍♂️ Training -->
+
 ## 📆 Todo
 - [ ] Release Inference Code 
 - [ ] Release Dataset
@@ -24,6 +58,8 @@
 - [ ] Release Training Code
 - [ ] Gradio Demo
 
+## 📚 Acknowledgements
+Special thanks to [EdgeRunner](https://github.com/NVlabs/EdgeRunner), [E.T.](https://github.com/robincourant/the-exceptional-trajectories) for codebase.
 
 ## ✒️ Citation
 If you find our work helpful for your research, please consider giving a star ⭐ and citation 📝
