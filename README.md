@@ -1,4 +1,4 @@
-# GenDoP: Auto-regressive Camera Trajectory Generation as a Director of Photography
+# GenDoP: Auto-regressive Camera Trajectory Generation as a Director of Photography [ICCV 2025]
 
 
 <p align="center">
