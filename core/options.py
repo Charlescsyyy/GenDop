@@ -1,63 +1,17 @@
-'''
------------------------------------------------------------------------------
-Copyright (c) 2024, NVIDIA CORPORATION. All rights reserved.
-
-NVIDIA CORPORATION and its licensors retain all intellectual property
-and proprietary rights in and to this software, related documentation
-and any modifications thereto. Any use, reproduction, disclosure or
-distribution of this software and related documentation without an express
-license agreement from NVIDIA CORPORATION is strictly prohibited.
------------------------------------------------------------------------------
-'''
-
 import tyro
 from dataclasses import dataclass
 from typing import Tuple, Literal, Dict, Optional, List
 
 @dataclass
 class Options:
-
     ### tokenizer
     # coord discrete bins (also the number of basic tokens)
-    discrete_bins: int = 1024
+    discrete_bins: int = 256
     bos_token_id: int = 1
     eos_token_id: int = 2
     pad_token_id: int = 0
     start_epoch: int = 0
 
-    ### point vae
-    # number of samples
-    point_num: int = 8192
-    # hidden size
-    point_hidden_dim: int = 1024
-    # number of heads
-    point_num_heads: int = 16
-    # latent size
-    point_latent_size: int = 2048
-    # latent dim
-    point_latent_dim: int = 64
-
-    # number of decoder layers
-    point_num_layers: int = 24
-    # number of query points per training iter
-    point_query_num: int = 81920
-    # encoder mode
-    point_encoder_mode: Literal['downsample', 'embed'] = 'embed'
-    # kl weight
-    kl_weight: float = 1e-8
-
-    ### dit
-    # dit hidden size
-    dit_hidden_dim: int = 1024
-    # dit number of heads
-    dit_num_heads: int = 16
-    # dit number of layers
-    dit_num_layers: int = 24
-    # diffusion snr gamma
-    snr_gamma: Optional[float] = 5.0
-    # diffusion scheduler predtype
-    noise_scheduler_predtype: Literal["epsilon", "v_prediction"] = "v_prediction"
-    
     ### lmm
     # freeze encoder
     freeze_encoder: bool = None
@@ -76,7 +30,6 @@ class Options:
     # length of condition tokens
     num_cond_tokens: int = 77
     # text 77, image 257
-    # num_cond_tokens: int = 77    # generate mode
     generate_mode: Literal['greedy', 'sample'] = 'sample'
     # num face condition
     use_num_face_cond: bool = False
@@ -96,13 +49,13 @@ class Options:
     # num workers
     num_workers: int = 64
     # testset size
-    testset_size: int = 32 # only if image cond now
+    testset_size: int = 1
     # decimate aug
     use_decimate_aug: bool = True
     # scale aug
     use_scale_aug: bool = True
     # dataset path
-    path: str = "/mnt/petrelfs/zhangmengchen/20241011_CameraTrajectory/DATA/ShotTraj/dataset/ArtTraj/train"
+    path: str = "DataDoP/train"
     
     ### training
     # workspace
@@ -141,7 +94,7 @@ class Options:
     # use wandb
     use_wandb: bool = False
     # model save
-    save_epoch: int = 10
+    save_epoch: int = 50
     
     ### testing
     # test image/point path
@@ -167,9 +120,7 @@ config_defaults['default'] = Options()
 
 config_doc['ArAE'] = 'ArAE'
 config_defaults['ArAE'] = Options(
-    point_encoder_mode='embed',
-    kl_weight=1e-8,
-    discrete_bins=1024,
+    discrete_bins=256,
     use_num_face_cond=True,
     use_decimate_aug=True,    
     cond_mode='text',
@@ -179,43 +130,17 @@ config_defaults['ArAE'] = Options(
     max_seq_length=40960,
     align_posemb='right',
     batch_size=16,
-    hidden_dim=1536,
-    num_heads=16,
-    num_layers=24,
-    # small 1024-8-12
-    # base 1536-16-24
+    hidden_dim=1024,
+    num_heads=8,
+    num_layers=12,
+    # small 512-8-8
+    # base 1024-8-12
+    # large 1536-16-24
     gradient_accumulation_steps=1,
     lr=1e-5,
     warmup_ratio=0,
     num_epochs=1000,
     eval_mode='loss',
-)
-
-config_doc['DiT'] = 'DiT'
-config_defaults['DiT'] = Options(
-    point_encoder_mode='embed',
-    kl_weight=1e-8,
-    max_face_length=8000,
-    discrete_bins=512,
-    use_num_face_cond=True,
-    use_decimate_aug=False,
-    cond_mode='point',
-    num_cond_tokens=2049,
-    freeze_encoder=False,
-    max_seq_length=40960,
-    hidden_dim=1536,
-    num_heads=16,
-    num_layers=24,
-    dit_hidden_dim=1024,
-    dit_num_heads=16,
-    dit_num_layers=24,
-    snr_gamma=5.0,
-    noise_scheduler_predtype="v_prediction",
-    batch_size=8,
-    gradient_accumulation_steps=1,
-    lr=1e-5,
-    num_epochs=300,
-    eval_mode='none',
 )
 
 AllConfigs = tyro.extras.subcommand_type_from_defaults(config_defaults, config_doc)

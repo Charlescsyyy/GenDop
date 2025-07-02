@@ -1,15 +1,3 @@
-'''
------------------------------------------------------------------------------
-Copyright (c) 2024, NVIDIA CORPORATION. All rights reserved.
-
-NVIDIA CORPORATION and its licensors retain all intellectual property
-and proprietary rights in and to this software, related documentation
-and any modifications thereto. Any use, reproduction, disclosure or
-distribution of this software and related documentation without an express
-license agreement from NVIDIA CORPORATION is strictly prohibited.
------------------------------------------------------------------------------
-'''
-
 import os
 import tyro
 import math
@@ -35,9 +23,6 @@ def main():
     print("save_epoch:", opt.save_epoch)
     print("pose_length:", opt.pose_length)
     # validate options
-    if opt.cond_mode == 'point':
-        assert opt.num_cond_tokens == opt.point_latent_size + (1 if opt.use_num_face_cond else 0)
-    
     # ddp_kwargs = DistributedDataParallelKwargs(find_unused_parameters=True)
 
     accelerator = Accelerator(
@@ -54,7 +39,6 @@ def main():
     accelerator.print(opt)
     
     # tokenizer
-    # tokenizer, vocab_size = get_tokenizer(opt)
     vocab_size = opt.discrete_bins + 4 # discrete_bins+1, bos, eos, pad
 
     # model
@@ -161,10 +145,7 @@ def main():
             total_loss = 0
             t_start = time.time()
             for i, data in enumerate(train_dataloader):
-                # print(data['masks'].shape)
-                # print(data['labels'].shape)
                 with accelerator.accumulate(model):
-
                     optimizer.zero_grad()
 
                     step_ratio = (epoch + i / len(train_dataloader)) / opt.num_epochs
@@ -206,22 +187,6 @@ def main():
                 if opt.use_wandb:
                     wandb.log({'train_loss': total_loss})
             
-            # # checkpoint
-            # if epoch % opt.save_epoch == 0 or epoch == opt.num_epochs - 1:
-            #     os.makedirs(save_dir, exist_ok=True)
-            #     accelerator.wait_for_everyone()
-            #     accelerator.save_model(model, save_dir)
-            #     if accelerator.is_main_process:
-            #         # symlink latest checkpoint for linux
-            #         if os.name == 'posix':
-            #             os.system(f'ln -sf {os.path.join(f"ep{epoch:04d}", "model.safetensors")} {os.path.join(opt.workspace, opt.exp_name, "model.safetensors")}')
-            #         # copy best checkpoint
-            #         if total_loss < best_loss:
-            #             best_loss = total_loss
-            #             shutil.copy(os.path.join(save_dir, 'model.safetensors'), os.path.join(opt.workspace, opt.exp_name, 'best.safetensors'))
-            #         old_save_dirs.append(save_dir)
-            #         # if len(old_save_dirs) > 2: # save at most 2 ckpts
-            #         #     shutil.rmtree(old_save_dirs.pop(0))
             if total_loss < best_loss:
                 best_loss = total_loss
                 accelerator.wait_for_everyone()
@@ -229,18 +194,10 @@ def main():
                     accelerator.save_model(model, os.path.join(opt.workspace, opt.exp_name))
                     shutil.copy(os.path.join(os.path.join(opt.workspace, opt.exp_name), 'model.safetensors'), os.path.join(opt.workspace, opt.exp_name, 'best.safetensors'))
 
-            # 每 save_epoch 保存一次模型
             if epoch % opt.save_epoch == 0 or epoch == opt.num_epochs - 1:
                 os.makedirs(save_dir, exist_ok=True)
                 accelerator.wait_for_everyone()
                 accelerator.save_model(model, save_dir)
-                # if accelerator.is_main_process:
-                #     # symlink latest checkpoint for linux
-                #     if os.name == 'posix':
-                #         os.system(f'ln -sf {os.path.join(f"ep{epoch:04d}", "model.safetensors")} {os.path.join(opt.workspace, opt.exp_name, "model.safetensors")}')
-                #     old_save_dirs.append(save_dir)
-                    # if len(old_save_dirs) > 2: # save at most 2 ckpts
-            #     shutil.rmtree(old_save_dirs.pop(0))
         else:
             if accelerator.is_main_process:
                 logger.info(f"epoch: {epoch} skip training for debug !!!")
@@ -254,7 +211,6 @@ def main():
                     out = model(data)
                     loss = out['loss']
 
-                    # save some meshes!
                     if accelerator.process_index < 4 and i < 4:
                         if opt.cond_mode == 'image':
                             image = data['rgb'][0].detach().cpu().numpy().transpose(1, 2, 0)
@@ -262,11 +218,6 @@ def main():
                         masks = data['masks'][0].detach().cpu().numpy()
                         coords = data['labels'][0].detach().cpu().numpy()[masks][1+opt.num_cond_tokens:-1]
                         pred_coords = out['logits'][0].argmax(-1).detach().cpu().numpy()[masks][opt.num_cond_tokens:-2]
-                        # try:
-                        #     save_mesh(coords, opt, f'{save_dir}/test_ep{epoch}_proc{accelerator.process_index}_{i}_gt.obj', tokenizer=tokenizer)
-                        #     save_mesh(pred_coords, opt, f'{save_dir}/test_ep{epoch}_proc{accelerator.process_index}_{i}.obj', tokenizer=tokenizer)
-                        # except Exception as e:
-                        #     print(f'[WARN] failed to save validation mesh: {e}')
                         
                     total_loss += loss.detach()
 
@@ -290,9 +241,7 @@ def main():
                             kiui.write_image(f'{save_dir}/testgen_ep{epoch}_proc{accelerator.process_index}_{i}_img.png', image)
                         masks = data['masks'][0].detach().cpu().numpy()
                         coords = data['labels'][0].detach().cpu().numpy()[masks][1+opt.num_cond_tokens:-1]
-                        # save_mesh(coords, opt, f'{save_dir}/testgen_ep{epoch}_proc{accelerator.process_index}_{i}_gt.obj', tokenizer=tokenizer)
-                        # meshes[0].export(f'{save_dir}/testgen_ep{epoch}_proc{accelerator.process_index}_{i}.obj')
-                
+
                 if accelerator.is_main_process:
                     logger.info(f"Eval epoch: {epoch} generated meshes saved.")
         else:

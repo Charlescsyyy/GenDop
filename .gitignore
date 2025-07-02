@@ -22,3 +22,7 @@ dist
 scripts
 
 checkpoints
+DataDoP
+outputs
+workspace
+*.sh

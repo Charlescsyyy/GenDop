@@ -1,15 +1,3 @@
-'''
------------------------------------------------------------------------------
-Copyright (c) 2024, NVIDIA CORPORATION. All rights reserved.
-
-NVIDIA CORPORATION and its licensors retain all intellectual property
-and proprietary rights in and to this software, related documentation
-and any modifications thereto. Any use, reproduction, disclosure or
-distribution of this software and related documentation without an express
-license agreement from NVIDIA CORPORATION is strictly prohibited.
------------------------------------------------------------------------------
-'''
-
 import numpy as np
 import random
 import trimesh
@@ -305,20 +293,14 @@ class LMM(nn.Module):
             elif self.opt.cond_mode == 'image':
                 B = conds.shape[0]
             elif self.opt.cond_mode == 'image+text':
-                # print(conds)
                 B = conds[1].shape[0]
-                # print(conds[1].shape)
             elif self.opt.cond_mode == 'image+depth':
-                # print(conds)
                 B = conds[1].shape[0]
-                # print(conds[1].shape)
             elif self.opt.cond_mode == 'depth+image+text':
                 B = conds[1].shape[0]
-                # print(conds[1].shape)
             assert B == 1, 'Batch size must be 1 for generation.'
 
             # encode input_embeds (only COND)
-            # cond_num_faces = torch.full((B,), num_faces, dtype=torch.long, device=conds.device)
             results_cond = self.encode_cond(conds) # [B, N, C]
             cond_embeds = results_cond['cond_embeds']
 

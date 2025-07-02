@@ -20,12 +20,10 @@
 
 ## ✨ Updates
 [2025-07-01] Released inference code and model checkpoints!
+[2025-07-01] Released training code.
 
-<!-- [2025-07-08] Released the curated trajectory dataset DataDoP along with its construction code.
-
-[2025-07-15] Released training code.
-
-[2025-07-15] Launched the Gradio demo. -->
+<!-- [2025-07-08] Released the curated trajectory dataset DataDoP along with its construction code. -->
+<!-- [2025-07-15] Launched the Gradio demo. -->
 
 ## 📦 Install 
 Make sure ```torch``` with CUDA is correctly installed. For training, we rely on ```flash-attn``` (requires at least Ampere GPUs like A100). For inference, older GPUs like V100 are also supported, although slower.
@@ -47,15 +45,55 @@ pip install -r requirements.txt
 ### Visualization
 
 
-<!-- ## 📚 Dataset
+## 📚 Dataset
+We provide [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP), a large-scale multi-modal dataset containing 29K realworld shots with free-moving camera trajectories, depth maps, and detailed captions in specific movements, interaction with the scene, and directorial intent. 
 
-## 🏋️‍♂️ Training -->
+Currently, we are releasing a subset of the dataset for validation purposes. Additional data will be made available coming soon.
+
+<!-- Please refer to the dataset README for more details. -->
+
+
+## 🏋️‍♂️ Training
+
+**Note:**  
+We have released a subset of the [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP) dataset for training and validation. Please organize your training data in the following structure. If you wish to use your own dataset, refer to our data format or modify the [core/provider.py](./core/provider.py) file as needed.
+
+```
+GenDoP
+├── DataDoP
+│   ├── train
+│   ├── test
+│   ├── train_valid.txt
+│   ├── test_valid.txt
+```
+
+**Training Commands:**  
+- Text (motion)-to-trajectory:
+  ```bash
+  accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_motion' --cond_mode 'text' --text_key 'Movement' --num_cond_tokens 77
+  ```
+- Text (directorial)-to-trajectory:
+  ```bash
+  accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_directorial' --cond_mode 'text' --text_key 'Concise Interaction' --num_cond_tokens 77
+  ```
+- Text & RGBD-to-trajectory:
+  ```bash
+  accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_rgbd' --cond_mode 'depth+image+text' --text_key 'Concise Interaction' --num_cond_tokens 591
+  ```
+
+**Training Details**  
+The model is trained on a single A100 (80GB) GPU for approximately 8 hours, with a batch size of 16, using a dataset of 30k examples for around 100 epochs.
+- Recommended hyperparameters:
+  ```
+  --discrete_bins 256 --pose_length 30 --hidden_dim 1024 --num_heads 8 --num_layers 12
+  ```
+You can adjust these parameters in [core/options.py](./core/options.py) according to your specific requirements.
 
 ## 📆 Todo
-- [ ] Release Inference Code 
+<!-- - [ ] Release Inference Code  -->
 - [ ] Release Dataset
 - [ ] Release Dataset Construction Code
-- [ ] Release Training Code
+<!-- - [ ] Release Training Code -->
 - [ ] Gradio Demo
 
 ## 📚 Acknowledgements

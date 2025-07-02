@@ -1,15 +1,4 @@
-'''
------------------------------------------------------------------------------
-Copyright (c) 2024, NVIDIA CORPORATION. All rights reserved.
-
-NVIDIA CORPORATION and its licensors retain all intellectual property
-and proprietary rights in and to this software, related documentation
-and any modifications thereto. Any use, reproduction, disclosure or
-distribution of this software and related documentation without an express
-license agreement from NVIDIA CORPORATION is strictly prohibited.
------------------------------------------------------------------------------
-'''
-
+import math
 import torch
 import numpy as np
 import trimesh
@@ -93,6 +82,96 @@ def matrix_to_quaternion(M: torch.Tensor) -> torch.Tensor:
 
     return torch.stack(Qs, dim=0).reshape(*prefix_shape, 4)
 
+def quaternion_slerp(
+    q0, q1, fraction, spin: int = 0, shortestpath: bool = True
+):
+    """Return spherical linear interpolation between two quaternions.
+    Args:
+        quat0: first quaternion
+        quat1: second quaternion
+        fraction: how much to interpolate between quat0 vs quat1 (if 0, closer to quat0; if 1, closer to quat1)
+        spin: how much of an additional spin to place on the interpolation
+        shortestpath: whether to return the short or long path to rotation
+    """
+    d = (q0 * q1).sum(-1)
+    if shortestpath:
+        # invert rotation
+        d[d < 0.0] = -d[d < 0.0]
+        q1[d < 0.0] = q1[d < 0.0]
+
+    d = d.clamp(0, 1.0)
+
+    angle = torch.acos(d) + spin * math.pi
+    isin = 1.0 / (torch.sin(angle)+ 1e-10)
+    q0_ = q0 * torch.sin((1.0 - fraction) * angle) * isin
+    q1_ = q1 * torch.sin(fraction * angle) * isin
+
+    q = q0_ + q1_
+    q[angle < 1e-5, :] = q0
+
+    return q
+
+
+def sample_from_two_pose(pose_a, pose_b, fraction, noise_strengths=[0, 0]):
+    """
+    Args:
+        pose_a: first pose
+        pose_b: second pose
+        fraction
+    """
+    def is_valid_rotation_matrix(matrix):
+        should_be_identity = torch.matmul(matrix, matrix.transpose(-1, -2))
+        identity = torch.eye(3, device=matrix.device).expand_as(should_be_identity)
+        return torch.allclose(should_be_identity, identity, atol=1e-6) and torch.allclose(torch.det(matrix), torch.ones_like(matrix))
+
+    quat_a = matrix_to_quaternion(pose_a[..., :3, :3])
+    quat_b = matrix_to_quaternion(pose_b[..., :3, :3])
+    dot = torch.sum(quat_a * quat_b, dim=-1, keepdim=True)
+    quat_b = torch.where(dot < 0, -quat_b, quat_b)
+
+    cos_theta = torch.sum(quat_a * quat_b, dim=-1, keepdim=True)
+    slerp_condition = cos_theta.abs() < 0.9995
+    slerp_quat = quaternion_slerp(quat_a, quat_b, fraction)
+    lerp_quat = (1 - fraction) * quat_a + fraction * quat_b
+    lerp_quat = lerp_quat / lerp_quat.norm(dim=-1, keepdim=True)
+    quaternion = torch.where(slerp_condition, slerp_quat, lerp_quat)
+    
+    quaternion = torch.nn.functional.normalize(quaternion + torch.randn_like(quaternion) * noise_strengths[0], dim=-1)
+
+    R = quaternion_to_matrix(quaternion)
+    T = (1 - fraction) * pose_a[..., :3, 3] + fraction * pose_b[..., :3, 3]
+    T = T + torch.randn_like(T) * noise_strengths[1]
+
+    new_pose = pose_a.clone()
+    new_pose[..., :3, :3] = R
+    new_pose[..., :3, 3] = T
+    
+    # assert is_valid_rotation_matrix(R), "Invalid rotation matrix"
+    if not is_valid_rotation_matrix(R):
+        print(new_pose.shape)
+        print("Invalid rotation matrix")
+        new_pose[..., :3, :3] = torch.eye(3)
+
+    return new_pose
+
+def sample_from_dense_cameras(dense_cameras, t, noise_strengths=[0, 0, 0, 0]):
+    B, N, C = dense_cameras.shape
+    B, M = t.shape
+    
+    left = torch.floor(t * (N-1)).long().clamp(0, N-2)
+    right = left + 1
+    fraction = t * (N-1) - left
+    a = torch.gather(dense_cameras, 1, left[..., None].repeat(1, 1, C))
+    b = torch.gather(dense_cameras, 1, right[..., None].repeat(1, 1, C))
+
+    new_pose = sample_from_two_pose(a[:, :, :12].reshape(B, M, 3, 4),
+                                    b[:, :, :12].reshape(B, M, 3, 4), fraction, noise_strengths=noise_strengths[:2])
+
+    new_ins = (1 - fraction) * a[:, :, 12:] + fraction * b[:, :, 12:]
+
+    return torch.cat([new_pose.reshape(B, M, 12), new_ins], dim=2)  
+    
+    
 def camera_to_token(cameras):
     B, N, _ = cameras.shape
 
