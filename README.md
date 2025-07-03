@@ -53,21 +53,21 @@ We provide the following pretrained models:
 **Note:** You may choose one of the following options: either input the text directly using `--text`, or provide both `--text_path` and `--text_key`. For more examples, please refer to [assets/examples](./assets/examples).
 
 **Inference Commands**  
-- Text (motion)-to-trajectory
+Text (motion)-to-trajectory
   ```bash
   python eval.py ArAE --workspace outputs --name text_motion/case1 --resume "checkpoints/text_motion.safetensors" \
       --cond_mode 'text' \
       --text "The camera remains static, then moves right, followed by moving forward while yawing right, and finally moving left and forward while continuing to yaw right."
   ```
 
-- Text (directorial)-to-trajectory
+Text (directorial)-to-trajectory
   ```bash
   python eval.py ArAE --workspace outputs --name text_directorial/case1 --resume "checkpoints/text_directorial.safetensors" \
       --cond_mode 'text' \
       --text "The camera starts static, moves down to reveal clouds, pitches up to show more formations, and returns to a static position."
   ```
 
-- Text & RGBD-to-trajectory
+Text & RGBD-to-trajectory
   ```bash
   python eval.py ArAE --workspace outputs --name text_rgbd/case1 --resume "checkpoints/text_rgbd.safetensors" \
       --cond_mode 'depth+image+text' \
@@ -112,7 +112,7 @@ Currently, we are releasing a subset of the dataset for validation purposes. Add
 
 ## 🏋️‍♂️ Training
 
-**Note:**  We have released a subset of the [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP) dataset for training and validation. Please organize your training data in the following structure. If you wish to use your own dataset, refer to our data format or modify the [core/provider.py](./core/provider.py) file as needed.
+**Note:**  We have released a subset of the [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP) dataset for training and validation. Please organize your training data in the following structure. If you wish to use your own dataset, refer to our data format and modify the [core/provider.py](./core/provider.py) file as needed.
 
 ```
 GenDoP
@@ -124,22 +124,22 @@ GenDoP
 ```
 
 **Training Commands**  
-- Text (motion)-to-trajectory
+Text (motion)-to-trajectory
   ```bash
   accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_motion' --cond_mode 'text' --text_key 'Movement' --num_cond_tokens 77
   ```
-- Text (directorial)-to-trajectory
+Text (directorial)-to-trajectory
   ```bash
   accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_directorial' --cond_mode 'text' --text_key 'Concise Interaction' --num_cond_tokens 77
   ```
-- Text & RGBD-to-trajectory
+Text & RGBD-to-trajectory
   ```bash
   accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_rgbd' --cond_mode 'depth+image+text' --text_key 'Concise Interaction' --num_cond_tokens 591
   ```
 
 **Training Details**  
 The model is trained on a single A100 (80GB) GPU for approximately 8 hours, with a batch size of 16, using a dataset of 30k examples for around 100 epochs.
-- Recommended hyperparameters:
+Recommended hyperparameters:
   ```
   --discrete_bins 256 --pose_length 30 --hidden_dim 1024 --num_heads 8 --num_layers 12
   ```
