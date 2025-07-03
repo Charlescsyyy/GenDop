@@ -52,7 +52,8 @@ We provide the following pretrained models:
 
 **Note:** You may choose one of the following options: either input the text directly using `--text`, or provide both `--text_path` and `--text_key`. For more examples, please refer to [assets/examples](./assets/examples).
 
-**Inference Commands**  
+**Inference Commands** 
+ 
 Text (motion)-to-trajectory
   ```bash
   python eval.py ArAE --workspace outputs --name text_motion/case1 --resume "checkpoints/text_motion.safetensors" \
@@ -124,6 +125,7 @@ GenDoP
 ```
 
 **Training Commands**  
+
 Text (motion)-to-trajectory
   ```bash
   accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_motion' --cond_mode 'text' --text_key 'Movement' --num_cond_tokens 77
@@ -138,6 +140,7 @@ Text & RGBD-to-trajectory
   ```
 
 **Training Details**  
+
 The model is trained on a single A100 (80GB) GPU for approximately 8 hours, with a batch size of 16, using a dataset of 30k examples for around 100 epochs.
 Recommended hyperparameters:
   ```
