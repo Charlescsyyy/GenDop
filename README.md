@@ -55,8 +55,7 @@ Currently, we are releasing a subset of the dataset for validation purposes. Add
 
 ## 🏋️‍♂️ Training
 
-**Note:**  
-We have released a subset of the [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP) dataset for training and validation. Please organize your training data in the following structure. If you wish to use your own dataset, refer to our data format or modify the [core/provider.py](./core/provider.py) file as needed.
+**Note:**  We have released a subset of the [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP) dataset for training and validation. Please organize your training data in the following structure. If you wish to use your own dataset, refer to our data format or modify the [core/provider.py](./core/provider.py) file as needed.
 
 ```
 GenDoP
@@ -67,7 +66,7 @@ GenDoP
 │   ├── test_valid.txt
 ```
 
-**Training Commands:**  
+**Training Commands**  
 - Text (motion)-to-trajectory:
   ```bash
   accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_motion' --cond_mode 'text' --text_key 'Movement' --num_cond_tokens 77
@@ -93,7 +92,6 @@ You can adjust these parameters in [core/options.py](./core/options.py) accordin
 <!-- - [ ] Release Inference Code  -->
 - [ ] Release Dataset
 - [ ] Release Dataset Construction Code
-<!-- - [ ] Release Training Code -->
 - [ ] Gradio Demo
 
 ## 📚 Acknowledgements
