@@ -77,9 +77,28 @@ We provide the following pretrained models:
       --image_path assets/examples/text_rgbd/case1_rgb.png \
       --depth_path assets/examples/text_rgbd/case1_depth.npy
   ```
-
+  
 ### Visualization
 
+**Note:** Our default visualization, as shown in the `*_traj_cleaning.png` files in our dataset, displays how the camera moves through the scene. It includes three views: front, top-down, and side perspectives. The colors transition from red to purple to show the sequence of movement. In the front view, you can observe up, down, left, and right movement, while in the top-down view, you can observe forward and backward movement.
+
+For clearer visualization, you can use the following method, which is also the one demonstrated in our paper.
+
+**Install**
+The Blender version used is blender-3.3.1-linux-x64.  
+Follow the [official instructions](https://www.blender.org/download/) to install Blender.
+Then, install the required Python packages:
+```bash
+<path-to-blender>/<version>/python/bin/python3.10 -m pip install trimesh
+<path-to-blender>/<version>/python/bin/python3.10 -m pip install matplotlib
+```
+
+**Visualize**
+To visualize the trajectory, run:
+```bash
+<path-to-blender>/blender --background --python Blender_visualization/blender_visualize.py
+```
+Modify the `traj_p` variable in [Blender_visualization/blender_visualize.py](./Blender_visualization/blender_visualize.py) to specify the JSON file you want to visualize. This JSON file should follow the same format as the `*_transforms_cleaning.json` files in our dataset, which are the normalized trajectory files.
 
 ## 📚 Dataset
 **Note:**  We provide [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP), a large-scale multi-modal dataset containing 29K realworld shots with free-moving camera trajectories, depth maps, and detailed captions in specific movements, interaction with the scene, and directorial intent. 
