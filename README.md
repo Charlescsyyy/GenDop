@@ -62,7 +62,7 @@ We provide the following pretrained models:
 
 - Text (directorial)-to-trajectory:
   ```bash
-  python eval.py ArAE --workspace outputs --name text_directorial/case4 --resume "checkpoints/text_directorial.safetensors" \
+  python eval.py ArAE --workspace outputs --name text_directorial/case1 --resume "checkpoints/text_directorial.safetensors" \
       --cond_mode 'text' \
       --text "The camera starts static, moves down to reveal clouds, pitches up to show more formations, and returns to a static position."
   ```
