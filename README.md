@@ -19,8 +19,9 @@
 
 
 ## ✨ Updates
-[2025-07-01] Released inference code and model checkpoints!
-[2025-07-01] Released training code.
+[2025-07-03] Released inference code and model checkpoints!
+
+[2025-07-03] Released training code.
 
 <!-- [2025-07-08] Released the curated trajectory dataset DataDoP along with its construction code. -->
 <!-- [2025-07-15] Launched the Gradio demo. -->
@@ -46,9 +47,9 @@ pip install -r requirements.txt
 
 
 ## 📚 Dataset
-We provide [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP), a large-scale multi-modal dataset containing 29K realworld shots with free-moving camera trajectories, depth maps, and detailed captions in specific movements, interaction with the scene, and directorial intent. 
+**Note:**  We provide [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP), a large-scale multi-modal dataset containing 29K realworld shots with free-moving camera trajectories, depth maps, and detailed captions in specific movements, interaction with the scene, and directorial intent. 
 
-Currently, we are releasing a subset of the dataset for validation purposes. Additional data will be made available coming soon.
+Currently, we are releasing a subset of the dataset for validation purposes. Additional data will be made available **coming soon**.
 
 <!-- Please refer to the dataset README for more details. -->
 
