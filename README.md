@@ -40,6 +40,13 @@ pip install -r requirements.txt
 ## 💡 Inference 
 
 ### Pretrained Models
+We provide the following pretrained models:
+
+| Model Type                  | Description                | Download Link |
+|-----------------------------|----------------------------|---------------|
+| text_motion | Text (directorial)-to-trajectory| [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_motion.safetensors)  |
+| text_directorial | Text (motion)-to-trajectory  | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_directorial.safetensors)  |
+| text_rgbd   | Text & RGBD-to-trajectory         | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_rgbd.safetensors)  |
 
 ### Trajectory Generation
 
