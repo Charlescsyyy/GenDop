@@ -29,9 +29,11 @@
 ## 📦 Install 
 Make sure ```torch``` with CUDA is correctly installed. For training, we rely on ```flash-attn``` (requires at least Ampere GPUs like A100). For inference, older GPUs like V100 are also supported, although slower.
 ```
+# clone
 git clone https://github.com/3DTopia/GenDoP.git
 cd GenDoP
 
+# environment
 conda create --name GenDoP python=3.10
 conda activate GenDoP
 pip install flash-attn --no-build-isolation
