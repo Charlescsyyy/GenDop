@@ -95,7 +95,9 @@ You can adjust these parameters in [core/options.py](./core/options.py) accordin
 - [ ] Gradio Demo
 
 ## 📚 Acknowledgements
-Special thanks to [EdgeRunner](https://github.com/NVlabs/EdgeRunner), [E.T.](https://github.com/robincourant/the-exceptional-trajectories) for codebase.
+This work is built on many amazing research works and open-source projects, thanks a lot to all the authors for sharing!
+- [EdgeRunner](https://github.com/NVlabs/EdgeRunner)
+- [E.T.](https://github.com/robincourant/the-exceptional-trajectories)
 
 ## ✒️ Citation
 If you find our work helpful for your research, please consider giving a star ⭐ and citation 📝
