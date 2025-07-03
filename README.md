@@ -129,15 +129,15 @@ GenDoP
 
 **Training Commands**  
 
-Text (motion)-to-trajectory
+- Text (motion)-to-trajectory
   ```bash
   accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_motion' --cond_mode 'text' --text_key 'Movement' --num_cond_tokens 77
   ```
-Text (directorial)-to-trajectory
+- Text (directorial)-to-trajectory
   ```bash
   accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_directorial' --cond_mode 'text' --text_key 'Concise Interaction' --num_cond_tokens 77
   ```
-Text & RGBD-to-trajectory
+- Text & RGBD-to-trajectory
   ```bash
   accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_rgbd' --cond_mode 'depth+image+text' --text_key 'Concise Interaction' --num_cond_tokens 591
   ```
