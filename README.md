@@ -128,7 +128,6 @@ GenDoP
 ```
 
 **Training Commands**  
-
 - Text (motion)-to-trajectory
   ```bash
   accelerate launch --config_file acc_configs/gpu1.yaml main.py ArAE --workspace workspace --exp_name 'text_motion' --cond_mode 'text' --text_key 'Movement' --num_cond_tokens 77
