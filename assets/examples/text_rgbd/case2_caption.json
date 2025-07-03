@@ -1,0 +1,5 @@
+{
+    "Movement": "The camera remains static, then moves left and forward, and finally holds a static position again.",
+    "Detailed Interaction": "The camera starts in a static position, capturing the scene of a room filled with framed portraits and artifacts. It then slowly moves left, revealing more of the intricately arranged wall, while simultaneously moving forward toward a prominent table in the center. As the camera approaches, it emphasizes the details of the objects on the table and the surrounding environment. Finally, the camera holds a static position, allowing the viewer to absorb the entire setting and appreciate the arrangement of artwork and furnishings within the room.",
+    "Concise Interaction": "The camera remains still, then glides left and forward, highlighting wall displays and a central table, before settling in a static position."
+}

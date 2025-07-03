@@ -1,0 +1,5 @@
+The camera remains static, then moves right, followed by moving forward while yawing right, and finally moving left and forward while continuing to yaw right.
+The camera remains static, then moves left and backward, follows with a movement to the left, and concludes by returning to a static position.
+The camera moves left and backward while yawing left, then continues moving left before remaining static.
+The camera remains static, then moves backward while yawing to the right, followed by continued backward movement.
+The camera starts static, moves down to reveal clouds, pitches up to show more formations, and returns to a static position.

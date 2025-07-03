@@ -1,0 +1,3 @@
+The camera starts static, moves down to reveal clouds, pitches up to show more formations, and returns to a static position.
+The camera remains still, then glides left and forward, highlighting wall displays and a central table, before settling static.
+The camera rolls right from a static position and then moves forward, revealing the arrangement of objects on the table and the interactions of the individuals.

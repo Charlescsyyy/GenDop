@@ -44,11 +44,39 @@ We provide the following pretrained models:
 
 | Model Type                  | Description                | Download Link |
 |-----------------------------|----------------------------|---------------|
-| text_motion | Text (directorial)-to-trajectory| [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_motion.safetensors)  |
-| text_directorial | Text (motion)-to-trajectory  | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_directorial.safetensors)  |
+| text_motion | Text (motion)-to-trajectory| [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_motion.safetensors)  |
+| text_directorial | Text (directorial)-to-trajectory  | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_directorial.safetensors)  |
 | text_rgbd   | Text & RGBD-to-trajectory         | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_rgbd.safetensors)  |
 
 ### Trajectory Generation
+
+**Inference Commands**  
+**Note:** You may choose one of the following options: either input the text directly using `--text`, or provide both `--text_path` and `--text_key`. For more examples, please refer to [assets/examples](./assets/examples).
+
+- **Text (motion)-to-trajectory:**
+  ```bash
+  python eval.py ArAE --workspace outputs --name text_motion/case1 --resume "checkpoints/text_motion.safetensors" \
+      --cond_mode 'text' \
+      --text "The camera remains static, then moves right, followed by moving forward while yawing right, and finally moving left and forward while continuing to yaw right."
+  ```
+
+- **Text (directorial)-to-trajectory:**
+  ```bash
+  python eval.py ArAE --workspace outputs --name text_directorial/case4 --resume "checkpoints/text_directorial.safetensors" \
+      --cond_mode 'text' \
+      --text "The camera starts static, moves down to reveal clouds, pitches up to show more formations, and returns to a static position."
+  ```
+
+- **Text & RGBD-to-trajectory:**
+  ```bash
+  python eval.py ArAE --workspace outputs --name text_rgbd/case1 --resume "checkpoints/text_rgbd.safetensors" \
+      --cond_mode 'depth+image+text' \
+      --text "The camera moves right and yaws left, highlighting the notebook and cup, then shifts forward to emphasize the subject's expression, before coming to a stop." \
+      --text_path assets/examples/text_rgbd/case1_caption.json \
+      --text_key 'Concise Interaction' \
+      --image_path assets/examples/text_rgbd/case1_rgb.png \
+      --depth_path assets/examples/text_rgbd/case1_depth.npy
+  ```
 
 ### Visualization
 

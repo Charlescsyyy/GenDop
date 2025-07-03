@@ -109,6 +109,11 @@ class Options:
     test_max_seq_length: Optional[int] = None
     
     text_key: Optional[str] = None
+    name: Optional[str] = None
+    text: Optional[str] = None
+    text_path: Optional[str] = None
+    image_path: Optional[str] = None
+    depth_path: Optional[str] = None
 
     
 # all the default settings

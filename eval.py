@@ -14,6 +14,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torchvision.transforms.functional as TF
 from safetensors.torch import load_file
+import argparse
 
 import kiui
 import trimesh
@@ -26,32 +27,9 @@ from core.utils import camera_to_token, camera_to_token_single, token_to_camera,
 from extrinsic2pyramid.util.camera_pose_visualizer import CameraPoseVisualizer
 import matplotlib.pyplot as plt
 
-monkey_patch_transformers()
-
-opt = tyro.cli(AllConfigs)
-
-kiui.seed_everything(opt.seed)
-
-# model
-model = LMM(opt)
-
-# resume pretrained checkpoint
-if opt.resume is not None:
-    if opt.resume.endswith('safetensors'):
-        ckpt = load_file(opt.resume, device='cpu')
-    else:
-        ckpt = torch.load(opt.resume, map_location='cpu')
-    model.load_state_dict(ckpt, strict=False)
-    print(f'[INFO] Loaded checkpoint from {opt.resume}')
-else:
-    print(f'[WARN] model randomly initialized, are you sane?')
-
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model = model.half().eval().to(device)
 
 def draw_json(c2ws, vis_path):
     output_dir = os.path.dirname(vis_path)
-    parent_dir = os.path.dirname(output_dir)
 
     rangesize = torch.max(torch.abs(torch.tensor(c2ws[:, :3, 3]))) * 1.1
 
@@ -82,7 +60,7 @@ def draw_json(c2ws, vis_path):
         visualizer.ax.view_init(elev=view['elev'], azim=view['azim'])
         
         # Save each view as a separate image
-        image_path = f"{parent_dir}/{view['name']}_view.png"
+        image_path = f"{vis_path[:-4]}_{view['name']}_view.png"
         os.makedirs(output_dir, exist_ok=True)
         visualizer.save(image_path)
         image_paths.append(image_path)
@@ -104,8 +82,12 @@ def draw_json(c2ws, vis_path):
 
     print(f"Combined image saved at {vis_path}")
 
-
-def process_data(opt, output_dir, name, image_path, text_path=None, depth_path=None):
+    # Now delete the individual view images
+    for image_path in image_paths:
+        os.remove(image_path)
+        print(f"Deleted {image_path}")
+    
+def process_data(opt, output_dir, name, text=None, text_path=None, image_path=None, depth_path=None):
     os.makedirs(output_dir, exist_ok=True)
     
     new_traj_path = os.path.join(output_dir, f"{name}_transforms_pred.json")
@@ -113,8 +95,7 @@ def process_data(opt, output_dir, name, image_path, text_path=None, depth_path=N
         print(f"Skipping {name} as it already exists.")
         return
 
-    text = None
-    if text_path is not None:
+    if text is None and text_path is not None:
         info = json.load(open(text_path, 'r'))
         if opt.cond_mode == 'text':
             text_key = opt.text_key
@@ -123,15 +104,15 @@ def process_data(opt, output_dir, name, image_path, text_path=None, depth_path=N
         text = info[text_key]
 
     if opt.cond_mode == 'text':
-        assert text_path is not None, "text_path is required for 'text' mode"
+        assert text is not None, "text is required for 'text' mode"
     elif opt.cond_mode == 'image+text':
-        assert text_path is not None, "text_path is required for 'image+text' mode"
+        assert text is not None and image_path is not None, "text and image_path are required for 'image+text' mode"
     elif opt.cond_mode == 'depth+image+text':
-        assert text_path is not None and depth_path is not None, "text_path and depth_path are required for 'depth+image+text' mode"
+        assert text is not None and image_path is not None and depth_path is not None, "text, image_path and depth_path are required for 'depth+image+text' mode"
     elif opt.cond_mode == 'image':
-        assert text_path is None and depth_path is None, "text_path and depth_path should be None for 'image' mode"
+        assert image_path is not None, "image_path is requiredfor 'image' mode"
     elif opt.cond_mode == 'image+depth':
-        assert depth_path is not None, "depth_path is required for 'image+depth' mode"
+        assert depth_path is not None and image_path is not None, "depth_path and image_path are required for 'image+depth' mode"
     else:
         raise ValueError(f"Unsupported cond_mode: {opt.cond_mode}")
 
@@ -292,46 +273,69 @@ def process_data(opt, output_dir, name, image_path, text_path=None, depth_path=N
                 json.dump(transforms_dict, f, indent=4)
                 
         def save_results(output_dir, name, camera_pose):
-            gt_caption_path = image_path.replace("_rgb.png", "_caption.json")
-            new_caption_path = os.path.join(output_dir, f"{name}_caption.json")
-            os.makedirs(os.path.dirname(new_caption_path), exist_ok=True)
-            shutil.copy(gt_caption_path, new_caption_path)
+            if text_path is not None and os.path.exists(text_path):
+                gt_caption_path = text_path
+                new_caption_path = os.path.join(output_dir, f"{name}_caption.json")
+                os.makedirs(os.path.dirname(new_caption_path), exist_ok=True)
+                if os.path.exists(gt_caption_path):
+                    shutil.copy(gt_caption_path, new_caption_path)
+                gt_pose_path = text_path.replace("_caption.json", "_transforms_cleaning.json")
+                new_pose_path = os.path.join(output_dir, f"{name}_transforms_ref.json")
+                if os.path.exists(gt_pose_path):
+                    shutil.copy(gt_pose_path, new_pose_path)
+            else:
+                new_caption_path = os.path.join(output_dir, f"{name}_caption.txt")
+                with open(new_caption_path, 'w') as f:
+                    f.write(text if text is not None else "No caption provided")
             
-            gt_pose_path = image_path.replace("_rgb.png", "_transforms_cleaning.json")
-            new_pose_path = os.path.join(output_dir, f"{name}_transforms_ref.json")
-            shutil.copy(gt_pose_path, new_pose_path)
-            
+
             pred_pose_path = os.path.join(output_dir, f"{name}_transforms_pred.json")
             pose_normalize(camera_pose, pred_pose_path)
         
         draw_json(c2ws, os.path.join(output_dir, f"{name}_traj.png"))
-        gt_traj_path = image_path.replace("_rgb.png", "_traj_cleaning.png")
-        new_traj_path = os.path.join(output_dir, f"{name}_traj_GT.png")
-        shutil.copy(gt_traj_path, new_traj_path)
+        
+        if text_path is not None and os.path.exists(text_path):
+            gt_traj_path = text_path.replace("_caption.json", "_traj_cleaning.png")
+            new_traj_path = os.path.join(output_dir, f"{name}_traj_GT.png")
+            if os.path.exists(gt_traj_path):
+                shutil.copy(gt_traj_path, new_traj_path)
             
         save_results(output_dir, name, camera_pose)
             
         torch.cuda.synchronize()
-        
-assert opt.test_path is not None
 
-output_dir = os.path.join(opt.workspace, opt.resume.split('/')[-1].split('.')[0])
-if opt.cond_mode == 'text': 
-    print("Start processing text")
-    if os.path.isdir(opt.test_path):
-        image_paths = glob.glob(os.path.join(opt.test_path, "*/*_rgb.png"))
-        print("Number of images:", len(image_paths))
-        for image_path in sorted(image_paths):
-            text_path = image_path.replace("_rgb.png", "_caption.json")
-            name = 'test/' + image_path.split('/')[-2] + '/' + image_path.split('/')[-1][:-8]
-            process_data(opt, output_dir, name, image_path, text_path)
-elif opt.cond_mode == 'depth+image+text': 
-    print("Start processing depth+image+text")
-    if os.path.isdir(opt.test_path):
-        image_paths = glob.glob(os.path.join(opt.test_path, "*/*_rgb.png"))
-        print("Number of images:", len(image_paths))
-        for image_path in sorted(image_paths):
-            text_path = image_path.replace("_rgb.png", "_caption.json")
-            depth_path = image_path.replace("_rgb.png", "_depth.npy")
-            name = 'test/' + image_path.split('/')[-2] + '/' + image_path.split('/')[-1][:-8]
-            process_data(opt, output_dir, name, image_path, text_path, depth_path)
+if __name__ == "__main__":
+    opt = tyro.cli(AllConfigs)
+
+    if opt.cond_mode == 'text':
+        opt.num_cond_tokens = 77
+    elif opt.cond_mode == 'depth+image+text':
+        opt.num_cond_tokens = 591
+        
+    monkey_patch_transformers()
+    kiui.seed_everything(opt.seed)
+    # model
+    model = LMM(opt)
+
+    # resume pretrained checkpoint
+    if opt.resume is not None:
+        if opt.resume.endswith('safetensors'):
+            ckpt = load_file(opt.resume, device='cpu')
+        else:
+            ckpt = torch.load(opt.resume, map_location='cpu')
+        model.load_state_dict(ckpt, strict=False)
+        print(f'[INFO] Loaded checkpoint from {opt.resume}')
+    else:
+        print(f'[WARN] model randomly initialized, are you sane?')
+
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = model.half().eval().to(device)
+
+    output_dir = opt.workspace
+    name = opt.name
+    image_path = opt.image_path
+    text = opt.text
+    text_path = opt.text_path
+    depth_path = opt.depth_path
+
+    process_data(opt, output_dir, name, text, text_path, image_path, depth_path)
