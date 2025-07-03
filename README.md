@@ -77,7 +77,7 @@ We provide the following pretrained models:
       --image_path assets/examples/text_rgbd/case1_rgb.png \
       --depth_path assets/examples/text_rgbd/case1_depth.npy
   ```
-  
+
 ### Visualization
 
 **Note:** Our default visualization, as shown in the `*_traj_cleaning.png` files in our dataset, displays how the camera moves through the scene. It includes three views: front, top-down, and side perspectives. The colors transition from red to purple to show the sequence of movement. In the front view, you can observe up, down, left, and right movement, while in the top-down view, you can observe forward and backward movement.
@@ -85,6 +85,7 @@ We provide the following pretrained models:
 For clearer visualization, you can use the following method, which is also the one demonstrated in our paper.
 
 **Install**
+
 The Blender version used is blender-3.3.1-linux-x64.  
 Follow the [official instructions](https://www.blender.org/download/) to install Blender.
 Then, install the required Python packages:
@@ -94,6 +95,7 @@ Then, install the required Python packages:
 ```
 
 **Visualize**
+
 To visualize the trajectory, run:
 ```bash
 <path-to-blender>/blender --background --python Blender_visualization/blender_visualize.py
