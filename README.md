@@ -48,11 +48,11 @@ We provide the following pretrained models:
 | text_directorial | Text (directorial)-to-trajectory  | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_directorial.safetensors)  |
 | text_rgbd   | Text & RGBD-to-trajectory         | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_rgbd.safetensors)  |
 
-### Trajectory Generation
+### Minimal Example
 
 **Note:** You may choose one of the following options: either input the text directly using `--text`, or provide both `--text_path` and `--text_key`. For more examples, please refer to [assets/examples](./assets/examples).
 
-**Minimal Example**  
+**Inference Commands**  
 - Text (motion)-to-trajectory
   ```bash
   python eval.py ArAE --workspace outputs --name text_motion/case1 --resume "checkpoints/text_motion.safetensors" \
