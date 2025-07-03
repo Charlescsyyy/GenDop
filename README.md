@@ -82,7 +82,7 @@ We provide the following pretrained models:
 
 **Note:** Our default visualization, as shown in the `*_traj_cleaning.png` files in our dataset, displays how the camera moves through the scene. It includes three views: front, top-down, and side perspectives. The colors transition from red to purple to show the sequence of movement. In the front view, you can observe vertical and horizontal movements (up, down, left, right), while the top-down view highlights forward and backward motion.
 
-For a clearer and more detailed visualization, consistent with the figures in our paper, you can use the following method:
+For a clearer visualization, consistent with the figures in our paper, you can use the following method:
 
 **Install**
 
