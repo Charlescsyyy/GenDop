@@ -127,7 +127,7 @@ Place the downloaded files into `./evaluate/CLaTr/CLaTr_checkpoints`.
 - Evaluation for Our Text (motion)-to-Trajectory Results
 
   **Note:** Modify keys in the config file [./evaluate/CLaTr/configs/config_eval.yaml](./evaluate/CLaTr/configs/config_eval.yaml)
-  - data_dir: the path to the testdata obtained from motion prompts <path-to-motion-output>
+  - data_dir: Text (motion)-to-Trajectory Testset Results <path-to-motion-output>
   - key: 'Movement'
 
   ```bash
@@ -145,7 +145,7 @@ Place the downloaded files into `./evaluate/CLaTr/CLaTr_checkpoints`.
 - Evaluation for Our Text (directorial)-to-Trajectory Results
   
   **Note:** Modify keys in the config file [./evaluate/CLaTr/configs/config_eval.yaml](./evaluate/CLaTr/configs/config_eval.yaml)
-  - data_dir: the path to the testdata obtained from directorial prompts <path-to-directorial-output>
+  - data_dir: Text (directorial)-to-Trajectory Testset Results <path-to-directorial-output>
   - key: 'Concise Interaction'
 
   ```bash
