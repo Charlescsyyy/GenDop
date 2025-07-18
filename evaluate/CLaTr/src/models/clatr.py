@@ -384,8 +384,6 @@ class CLaTr(TEMOS):
         out = self.compute_loss_eval(batch, return_all=True)
         _, t_latents, m_ref_latents, m_pred_latents, t_trajectories, m_ref_trajectories, m_pred_trajectories = out
 
-        # print(batch.keys())
-        # print(batch["traj_feat"])
         batch["t_latents"] = t_latents
         batch["m_ref_latents"] = m_ref_latents
         batch["m_pred_latents"] = m_pred_latents

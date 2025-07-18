@@ -61,7 +61,6 @@ def load_caption(json_path: str, keyname):
     """Load a txt file."""
     with open(json_path, "r") as f:
         data = json.load(f)
-    
     return data[keyname]
 
 def save_feats(
@@ -141,9 +140,8 @@ def extract_clip(
     device: str,
 ):
     caption_paths = glob.glob(str(data_dir / '**/*_caption.json'), recursive=True)
-    print(len(caption_paths))
     caption_loader = DataLoader(caption_paths, batch_size=batch_size, shuffle=False)
-    output_dir = Path("/mnt/petrelfs/zhangmengchen/20241011_CameraTrajectory/evaluate/ArtTraj_Feat/caption_clip")
+    output_dir = Path("./ArtTraj_Feat/caption_clip")
     clip_model = load_clip_model(clip_version, device)
 
     with PROGRESS:

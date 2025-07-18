@@ -1,4 +1,5 @@
 import json
+import yaml
 from pathlib import Path
 from typing import Any, Dict
 import numpy as np
@@ -8,10 +9,18 @@ import torch.nn.functional as F
 
 # from utils.file_utils import load_txt
 
+def load_config(config_path):
+    with open(config_path, 'r') as file:
+        config = yaml.safe_load(file)  # 安全地加载YAML文件内容
+    return config
+
+config_path = "./configs/config_eval.yaml"
+config = load_config(config_path)
+
 def load_caption(json_path):
     with open(json_path, "r") as f:
         caption = json.load(f)
-    return caption['Movement']
+    return caption[config['key']]
     # return caption['Concise Interaction']
 
 class CaptionDataset(Dataset):

@@ -45,7 +45,6 @@ def main(config: DictConfig) -> Optional[float]:
 
     dataset = instantiate(config.dataset)
     datamodule = Datamodule(
-        # train_dataset=deepcopy(dataset).set_split("train"),
         train_dataset = None,
         eval_dataset=deepcopy(dataset).set_split("test"),
         batch_train_size=config.batch_size,
@@ -75,20 +74,10 @@ def main(config: DictConfig) -> Optional[float]:
         preds["m_ref_latents"].append(batch["m_ref_latents"])
         preds["m_pred_latents"].append(batch["m_pred_latents"])
         
-        # assert preds["ref_matrices"][0].shape == torch.Size([32, 120, 4, 4])
-        # assert preds["t_matrices"][0].shape == torch.Size([32, 120, 4, 4])
-        # assert preds["m_ref_matrices"][0].shape == torch.Size([32, 120, 4, 4])
-        # assert preds["m_pred_matrices"][0].shape == torch.Size([32, 120, 4, 4])
-        # assert preds["t_latents"][0].shape == torch.Size([32, 256])
-        # assert preds["m_ref_latents"][0].shape == torch.Size([32, 256])
-        # assert preds["m_pred_latents"][0].shape == torch.Size([32, 256])
-        
     preds = to_native(preds)
-    print(preds.keys())
     ckpt_name = Path(config.checkpoint_path).stem
     model_name = config.data_dir.split("/")[-1]
-    pred_filename = Path(f"output_rebuttal/{ckpt_name}-{model_name}-preds.npy")
-    # pred_filename = Path(config.log_dir).parent / f"{ckpt_name}-{model_name}-preds.npy"
+    pred_filename = Path(f"output/{ckpt_name}-{model_name}-preds.npy")
     pred_filename.parent.mkdir(parents=True, exist_ok=True)
     np.save(pred_filename, preds)
 

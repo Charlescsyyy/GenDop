@@ -24,4 +24,8 @@ DataDoP
 outputs
 workspace
 *.sh
-evaluate/CLaTr/checkpoints
+evaluate/CLaTr/CLaTr_checkpoints
+evaluate/CLaTr/output
+evaluate/CLaTr/results
+evaluate/CLaTr/lightning_logs
+evaluate/eval/results

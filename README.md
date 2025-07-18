@@ -46,9 +46,9 @@ We provide the following pretrained models:
 
 | Model Type                  | Description                | Download Link |
 |-----------------------------|----------------------------|---------------|
-| text_motion | Text (motion)-to-trajectory| [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_motion.safetensors)  |
-| text_directorial | Text (directorial)-to-trajectory  | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_directorial.safetensors)  |
-| text_rgbd   | Text & RGBD-to-trajectory         | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_rgbd.safetensors)  |
+| text_motion | Text (motion)-to-Trajectory| [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_motion.safetensors)  |
+| text_directorial | Text (directorial)-to-Trajectory  | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_directorial.safetensors)  |
+| text_rgbd   | Text & RGBD-to-Trajectory         | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/checkpoints/text_rgbd.safetensors)  |
 
 ### Minimal Example
 
@@ -107,6 +107,59 @@ To visualize the trajectory, run:
 <path-to-blender>/blender --background --python Blender_visualization/blender_visualize.py
 ```
 Modify the `traj_p` variable in [Blender_visualization/blender_visualize.py](./Blender_visualization/blender_visualize.py) to specify the JSON file you want to visualize. This JSON file should follow the same format as the `*_transforms_cleaning.json` files in our dataset, which are the standardized trajectory files.
+
+### Evaluation
+
+**CLaTr checkpoints**
+
+We provide the following Contrastive Language-Trajectory embedding (CLaTr) checkpoints:
+
+| Model Type                  | Description                | Download Link |
+|-----------------------------|----------------------------|---------------|
+| epoch99_motion | Evaluation for Text (motion)-to-Trajectory| [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/CLaTr_checkpoints/epoch99_motion.ckpt)  |
+| epoch99_directorial | Evaluation for Text (directorial)-to-Trajectory  | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/CLaTr_checkpoints/epoch99_directorial.ckpt)  |
+
+**Evaluation Commands**
+
+- Evaluation for Text (motion)-to-Trajectory
+
+  **Note:** Modify the data_dir and key in the config file [./evaluate/CLaTr/configs/config_eval.yaml](./evaluate/CLaTr/configs/config_eval.yaml)
+  - data_dir: the path to the testdata obtained from motion prompts <path-to-motion-output>
+  - key: 'Movement'
+
+  ```bash
+  # Extract CLaTr (motion) features
+  cd ./evaluate/CLaTr
+  export HYDRA_FULL_ERROR=1  
+  python -m src.extraction checkpoint_path=CLaTr_checkpoints/epoch99_motion.ckpt
+  # A .npy file <<path-to-motion-output>-preds.npy> containing the CLaTr (motion) features will be saved in ./evaluate/CLaTr/output
+
+  # Evaluate CLaTr (motion) features
+  cd ./evaluate/eval
+  python -m src.eval_only --pred_path <<path-to-motion-output>-preds.npy>
+  ```
+
+- Evaluation for Text (directorial)-to-Trajectory
+  
+  **Note:** Modify the data_dir and key in the config file [./evaluate/CLaTr/configs/config_eval.yaml](./evaluate/CLaTr/configs/config_eval.yaml)
+  - data_dir: the path to the testdata obtained from directorial prompts <path-to-directorial-output>
+  - key: 'Concise Interaction'
+
+  ```bash
+  # Extract CLaTr (directorial) features
+  cd ./evaluate/CLaTr
+  export HYDRA_FULL_ERROR=1  
+  python -m src.extraction checkpoint_path=CLaTr_checkpoints/epoch99_directorial.ckpt
+  # A .npy file <<path-to-directorial-output>-preds.npy> containing the CLaTr (directorial) features will be saved in ./evaluate/CLaTr/output
+
+  # Evaluate CLaTr (directorial) features
+  cd ./evaluate/eval
+  python -m src.eval_only --pred_path <<path-to-directorial-output>-preds.npy>
+  ```
+
+  Our paper presents four metrics: captions/fscore, clatr/clatr_score, clatr/coverage, and clatr/fcd.
+
+
 
 ## 📚 Dataset
 **Note:**  We provide [DataDoP](https://huggingface.co/datasets/Dubhe-zmc/DataDoP), a large-scale multi-modal dataset containing 29K realworld shots with free-moving camera trajectories, depth maps, and detailed captions in specific movements, interaction with the scene, and directorial intent. 

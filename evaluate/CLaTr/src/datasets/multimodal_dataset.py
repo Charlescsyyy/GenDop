@@ -55,15 +55,6 @@ class MultimodalDataset(Dataset):
     # --------------------------------------------------------------------------------- #
 
     def __getitem__(self, index):
-        # try:
-        #     output = self.trajectory_dataset[index]
-        # except:
-        #     print(index)
-        #     if index > 0:
-        #         return self.__getitem__(index-1)
-        #     else:
-        #         return self.__getitem__(random.randint(1, 2999))
-        
         output = self.trajectory_dataset[index]
         if len(output) == 3:
             # print("Start training ...")
@@ -78,7 +69,6 @@ class MultimodalDataset(Dataset):
             # print(self.modality_datasets)
             for modality_name, modality_dataset in self.modality_datasets.items():
                 modality_filename, modality_feature, modality_raw = modality_dataset[index]
-                # print(trajectory_filename.split(".")[0], modality_filename.split(".")[0])
                 assert trajectory_filename.split(".")[0].replace('_transforms_cleaning', '') == modality_filename.split(".")[0]
                 out[f"{modality_name}_filename"] = modality_filename
                 out[f"{modality_name}_feat"] = modality_feature
@@ -89,7 +79,6 @@ class MultimodalDataset(Dataset):
         
         elif len(output) == 6:
             # print("Start extraction ...")
-        
             traj_ref_filename, traj_ref_feature, padding_mask_ref, traj_pred_filename, traj_pred_feature, padding_mask_pred = self.trajectory_dataset[index]
             out = {
                 "traj_ref_filename": traj_ref_filename,
@@ -102,7 +91,6 @@ class MultimodalDataset(Dataset):
 
             for modality_name, modality_dataset in self.modality_datasets.items():
                 modality_filename, modality_feature, modality_raw = modality_dataset[index]
-                # print(trajectory_filename.split(".")[0], modality_filename.split(".")[0])
                 assert traj_ref_filename.split(".")[0].replace('_transforms_ref', '') == modality_filename.split(".")[0]
                 out[f"{modality_name}_filename"] = modality_filename
                 out[f"{modality_name}_feat"] = modality_feature

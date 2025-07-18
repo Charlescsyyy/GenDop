@@ -9,8 +9,10 @@ outdir: null
 entity: null
 project_name: trajectory-clip
 results_dir: ./results
-data_dir: /mnt/petrelfs/zhangmengchen/20241011_CameraTrajectory/EdgeRunner_consecutive/Rebuttal/text-batchsize=16-discrete_bins=256-length=30-nofreeze-small-pure-ArtTraj-svd9d-resume_ep0050
-# data_dir: /mnt/petrelfs/zhangmengchen/20241011_CameraTrajectory/DIRECTOR-demo/et-datadop-director
+
+data_dir: /mnt/petrelfs/zhangmengchen/20241011_CameraTrajectory/EdgeRunner/Results_epoch100/text-batchsize=16-discrete_bins=256-length=30-nofreeze-small-pure-ArtTraj_ep0100
+key: Movement
+
 xp_name: ${model.name}_${dataset.caption.lm.lm_name}_${dataset.name}
 log_dir: ${results_dir}/${xp_name}/${timestamp}
 checkpoint_path: null
