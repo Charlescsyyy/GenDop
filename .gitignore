@@ -24,3 +24,4 @@ DataDoP
 outputs
 workspace
 *.sh
+evaluate/CLaTr/checkpoints
