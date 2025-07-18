@@ -10,7 +10,7 @@ entity: null
 project_name: trajectory-clip
 results_dir: ./results
 
-data_dir: /mnt/petrelfs/zhangmengchen/20241011_CameraTrajectory/EdgeRunner/Results_epoch100/text-batchsize=16-discrete_bins=256-length=30-nofreeze-small-pure-ArtTraj_ep0100
+data_dir: ./Results/<path-to-directorial-output>
 key: Movement
 
 xp_name: ${model.name}_${dataset.caption.lm.lm_name}_${dataset.name}
