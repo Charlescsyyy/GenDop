@@ -160,7 +160,7 @@ Place the downloaded files into `./evaluate/CLaTr/CLaTr_checkpoints`.
   python -m src.eval_only --pred_path <<path-to-directorial-output>-preds.npy>
   ```
 
-  Our paper presents four metrics: captions/fscore, clatr/clatr_score, clatr/coverage, and clatr/fcd.
+  Our paper presents four metrics: `captions/fscore`, `clatr/clatr_score`, `clatr/coverage`, and `clatr/fcd`.
 
 
 
