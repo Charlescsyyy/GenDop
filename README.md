@@ -56,7 +56,7 @@ We provide the following pretrained models:
 
 **Inference Commands** 
 
-- Text (motion)-to-trajectory
+- Text (motion)-to-Trajectory
 
   ```bash
   python eval.py ArAE --workspace outputs --name text_motion/case1 --resume "checkpoints/text_motion.safetensors" \
@@ -64,7 +64,7 @@ We provide the following pretrained models:
       --text "The camera remains static, then moves right, followed by moving forward while yawing right, and finally moving left and forward while continuing to yaw right."
   ```
 
-- Text (directorial)-to-trajectory
+- Text (directorial)-to-Trajectory
 
   ```bash
   python eval.py ArAE --workspace outputs --name text_directorial/case1 --resume "checkpoints/text_directorial.safetensors" \
@@ -72,7 +72,7 @@ We provide the following pretrained models:
       --text "The camera starts static, moves down to reveal clouds, pitches up to show more formations, and returns to a static position."
   ```
 
-- Text & RGBD-to-trajectory
+- Text & RGBD-to-Trajectory
 
   ```bash
   python eval.py ArAE --workspace outputs --name text_rgbd/case1 --resume "checkpoints/text_rgbd.safetensors" \
@@ -119,11 +119,14 @@ We provide the following Contrastive Language-Trajectory embedding (CLaTr) check
 | epoch99_motion | Evaluation for Text (motion)-to-Trajectory| [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/CLaTr_checkpoints/epoch99_motion.ckpt)  |
 | epoch99_directorial | Evaluation for Text (directorial)-to-Trajectory  | [Download](https://huggingface.co/Dubhe-zmc/GenDoP/blob/main/CLaTr_checkpoints/epoch99_directorial.ckpt)  |
 
+Place the downloaded files into `./evaluate/CLaTr/CLaTr_checkpoints`.
+
+
 **Evaluation Commands**
 
-- Evaluation for Text (motion)-to-Trajectory
+- Evaluation for Our Text (motion)-to-Trajectory Results
 
-  **Note:** Modify the data_dir and key in the config file [./evaluate/CLaTr/configs/config_eval.yaml](./evaluate/CLaTr/configs/config_eval.yaml)
+  **Note:** Modify keys in the config file [./evaluate/CLaTr/configs/config_eval.yaml](./evaluate/CLaTr/configs/config_eval.yaml)
   - data_dir: the path to the testdata obtained from motion prompts <path-to-motion-output>
   - key: 'Movement'
 
@@ -139,9 +142,9 @@ We provide the following Contrastive Language-Trajectory embedding (CLaTr) check
   python -m src.eval_only --pred_path <<path-to-motion-output>-preds.npy>
   ```
 
-- Evaluation for Text (directorial)-to-Trajectory
+- Evaluation for Our Text (directorial)-to-Trajectory Results
   
-  **Note:** Modify the data_dir and key in the config file [./evaluate/CLaTr/configs/config_eval.yaml](./evaluate/CLaTr/configs/config_eval.yaml)
+  **Note:** Modify keys in the config file [./evaluate/CLaTr/configs/config_eval.yaml](./evaluate/CLaTr/configs/config_eval.yaml)
   - data_dir: the path to the testdata obtained from directorial prompts <path-to-directorial-output>
   - key: 'Concise Interaction'
 
