@@ -137,7 +137,7 @@ Place the downloaded files into `./evaluate/CLaTr/CLaTr_checkpoints`.
   python -m src.extraction checkpoint_path=CLaTr_checkpoints/epoch99_motion.ckpt
   # A .npy file <<path-to-motion-output>-preds.npy> containing the CLaTr (motion) features will be saved in ./evaluate/CLaTr/output
 
-  # Evaluate CLaTr (motion) features
+  # Evaluate CLaTr (motion)
   cd ./evaluate/eval
   python -m src.eval_only --pred_path <<path-to-motion-output>-preds.npy>
   ```
@@ -155,7 +155,7 @@ Place the downloaded files into `./evaluate/CLaTr/CLaTr_checkpoints`.
   python -m src.extraction checkpoint_path=CLaTr_checkpoints/epoch99_directorial.ckpt
   # A .npy file <<path-to-directorial-output>-preds.npy> containing the CLaTr (directorial) features will be saved in ./evaluate/CLaTr/output
 
-  # Evaluate CLaTr (directorial) features
+  # Evaluate CLaTr (directorial)
   cd ./evaluate/eval
   python -m src.eval_only --pred_path <<path-to-directorial-output>-preds.npy>
   ```
