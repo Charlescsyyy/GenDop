@@ -61,8 +61,6 @@ DataDoP // DataDoP Dataset
 ## Dataset Construction
 ### Install 
 ```
-cd dataset
-
 # environment
 conda create --name DataDoP python=3.10
 conda activate DataDoP
