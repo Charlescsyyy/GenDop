@@ -51,22 +51,34 @@ DataDoP // DataDoP Dataset
 │   ├── <ShotID>_depth.npy
 │   │       // Depth map (initial frame) from the shot, stored in NumPy .npy format
 │   ├── <ShotID>_intrinsics.txt
-│   │       // Camera intrinsics from Monst3R
+│   │       // Camera intrinsics from MonST3R
 │   ├── <ShotID>_traj.txt
-│   │       // Camera extrinsics from Monst3R
+│   │       // Camera extrinsics from MonST3R
 │   ├── <ShotID>_transforms_cleaning.json
 │   │       // Cleaned, smoothed, and interpolated camera trajectory data (in fixed-length format)
 ```
 
 ## Dataset Construction
+### Install 
+```
+cd dataset
+
+# environment
+conda create --name DataDoP python=3.10
+conda activate DataDoP
+pip install -r requirements.txt
+```
+Install [MonST3R](https://github.com/Junyi42/monst3r) (follow the official guidelines if you encounter any issues)
+
 ### Data Collection 
 - Clips with VideoID starting with `0_` are from [MovieNet](https://movienet.github.io/), where the VideoID remains the same as the original.
 - Clips with VideoID starting with `1_` are sourced from YouTube, focusing on artistic videos such as movies, series, and documentaries.
 
 ### Data Processing
 Here are the instructions to reproduce the DataDoP dataset using the data processing scripts.
-1. Remove Black Borders from Videos:
+1. Download videos from YouTube
 ```bash
+python scripts/download.py
 ```
 2. Video Splitting:
 ```bash
@@ -77,7 +89,7 @@ Here are the instructions to reproduce the DataDoP dataset using the data proces
 4. Filter Out Static, Too Dark, or Poor Tracking Shots:
 ```bash
 ```
-5. Monst3r for Camera Trajectories:
+5. MonST3R for Camera Trajectories:
 ```bash
 ```
 6. Dataset Building:
