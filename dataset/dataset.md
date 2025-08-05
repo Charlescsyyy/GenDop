@@ -58,13 +58,13 @@ DataDoP // DataDoP Dataset
 │   │       // Cleaned, smoothed, and interpolated camera trajectory data (in fixed-length format)
 ```
 
-## Dataset Construction Pipeline
+## Dataset Construction
 ### Data Collection 
-- Shots with VideoIDs starting with `0_` are from [MovieNet](https://movienet.github.io/), where the VideoID remains the same as the original.
-- Shots with VideoIDs starting with `1_` are sourced from YouTube, focusing on artistic videos such as movies, series, and documentaries.
+- Clips with VideoID starting with `0_` are from [MovieNet](https://movienet.github.io/), where the VideoID remains the same as the original.
+- Clips with VideoID starting with `1_` are sourced from YouTube, focusing on artistic videos such as movies, series, and documentaries.
 
-### Data Processing Pipeline
-Here are the instructions for running the data processing scripts to reproduce the DataDoP dataset.
+### Data Processing
+Here are the instructions to reproduce the DataDoP dataset using the data processing scripts.
 1. Remove Black Borders from Videos:
 ```bash
 ```
