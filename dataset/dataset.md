@@ -19,11 +19,10 @@ We are committed to maintaining transparency and compliance in our data collecti
 - All videos of the DataDoP dataset are obtained from the Internet which is not the property of our institutions. Our institution is not responsible for the content or the meaning of these videos.
 - You agree not to reproduce, duplicate, copy, sell, trade, resell, or exploit for any commercial purposes, any portion of the videos, and any portion of derived data. You agree not to further copy, publish, or distribute any portion of the DataDoP dataset.
 
-## Dataset Construction Pipeline
-### Dataset Overview
+## Dataset Overview
 The `DataDoP` dataset comprises 29K video clips curated from online artistic videos. Each data sample includes metadata such as ClipID, YouTubeID, StartTime, EndTime, CropSize. In addition to the raw data, the processed dataset features captions, the RGBD of the first frame, and extracted camera trajectories. These trajectories have been subsequently cleaned, smoothed, and interpolated into fixed-length sequences.
 
-### Dataset Format
+### Dataset Metadata
 The [`dataset/metadata.csv`](metadata.csv) file contains the following columns:
 - **ClipID**: The Video ID for the video and its corresponding shot ID, formatted as `1_0000/shot_0014`.
 - **YouTubeID**: The YouTube ID of the original video (e.g., `dfo_rMmdi0A`). The source video URL can be found at `https://www.youtube.com/watch?v={youtubeid}`.
@@ -37,6 +36,7 @@ The [`dataset/metadata.csv`](metadata.csv) file contains the following columns:
 |---------|-----------|-----------|---------|----------|
 |  |  |  |  |  |
 
+### Dataset Format
 The `DataDoP Dataset` format is as follows:
 ```bash
 DataDoP // DataDoP Dataset
@@ -59,9 +59,9 @@ DataDoP // DataDoP Dataset
 │   │       // Cleaned, smoothed, and interpolated camera trajectory data (in fixed-length format)
 ```
 
+## Dataset Construction Pipeline
 ### Data Collection 
-- **Sources**: Shots with VideoIDs starting with `0_` are from MovieNet, where the VideoID remains the same as the original. Shots with VideoIDs starting with `1_` were sourced from YouTube, focusing on artistic videos such as movies, series, and documentaries.
-
+- **Sources**: Shots with VideoIDs starting with `0_` are from [MovieNet](https://movienet.github.io/), where the VideoID remains the same as the original. Shots with VideoIDs starting with `1_` were sourced from YouTube, focusing on artistic videos such as movies, series, and documentaries.
 
 ### Data Processing Pipeline
 Here are the instructions for running the data processing scripts to reproduce the DataDoP dataset.
