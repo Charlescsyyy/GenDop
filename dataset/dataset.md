@@ -57,6 +57,7 @@ DataDoP // DataDoP Dataset
 - **Sources**: Shots with VideoIDs starting with `0_` are from MovieNet, where the VideoID remains the same as the original. Shots with VideoIDs starting with `1_` were sourced from YouTube, focusing on artistic videos such as movies, series, and documentaries.
 
 - **Example Data Entry**
+
 | VideoID | YouTubeID | StartTime | EndTime | CropSize |
 |---------|-----------|-----------|---------|----------|
 |  |  |  |  |  |
