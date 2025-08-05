@@ -31,6 +31,12 @@ The [`dataset/metadata.csv`](metadata.csv) file contains the following columns:
 - **EndTime**: The end time of the video segment in seconds.
 - **CropSize**: The cropping parameters in the format used by `ffmpeg`, typically formatted as `w:h:x:y` (e.g., `640:360:0:30`).
 
+**Example Data Entry**
+
+| VideoID | YouTubeID | StartTime | EndTime | CropSize |
+|---------|-----------|-----------|---------|----------|
+|  |  |  |  |  |
+
 The `DataDoP Dataset` format is as follows:
 ```bash
 DataDoP // DataDoP Dataset
@@ -55,12 +61,6 @@ DataDoP // DataDoP Dataset
 
 ### Data Collection 
 - **Sources**: Shots with VideoIDs starting with `0_` are from MovieNet, where the VideoID remains the same as the original. Shots with VideoIDs starting with `1_` were sourced from YouTube, focusing on artistic videos such as movies, series, and documentaries.
-
-- **Example Data Entry**
-
-| VideoID | YouTubeID | StartTime | EndTime | CropSize |
-|---------|-----------|-----------|---------|----------|
-|  |  |  |  |  |
 
 
 ### Data Processing Pipeline
