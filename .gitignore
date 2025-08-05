@@ -29,3 +29,6 @@ evaluate/CLaTr/output
 evaluate/CLaTr/results
 evaluate/CLaTr/lightning_logs
 evaluate/eval/results
+dataset/DATA
+dataset/download
+dataset/readme.md
