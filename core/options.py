@@ -114,6 +114,8 @@ class Options:
     text_path: Optional[str] = None
     image_path: Optional[str] = None
     depth_path: Optional[str] = None
+    # translation gain for scaling predicted camera translations during inference
+    translation_gain: float = 1.0
 
     
 # all the default settings

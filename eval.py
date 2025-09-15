@@ -231,7 +231,8 @@ def process_data(opt, output_dir, name, text=None, text_path=None, image_path=No
         c2ws = np.array(camera_pose[:, :, :12].cpu())
         scale_value = np.array(scale[0].cpu())
         c2ws = c2ws.reshape((-1, 3, 4))
-        c2ws[:, :3, 3] = c2ws[:, :3, 3] * scale_value
+        # apply user-controlled translation gain on top of scale_value
+        c2ws[:, :3, 3] = c2ws[:, :3, 3] * scale_value * float(getattr(opt, 'translation_gain', 1.0))
 
         row_to_add = np.array([0, 0, 0, 1])
         c2ws = np.array([np.vstack((matrix, row_to_add)) for matrix in c2ws])
